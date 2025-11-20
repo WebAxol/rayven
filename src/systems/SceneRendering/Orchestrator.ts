@@ -1,4 +1,4 @@
-import { System }         from "/kernox.js";
+import { System }         from "kernox";
 import SpaceSearcher      from "./SpaceSearcher.js";
 import RayCaster          from "./RayCaster.js";
 import DataModeller       from "./DataModeller.js";
@@ -7,7 +7,7 @@ import Renderer           from "./Renderer.js";
 import LocatorGL          from "../../utils/rendering/LocatorGL.js";
 import { locatorPromise } from "../../setup/webGL.js";
 import { camera }         from "../../utils/scene/Camera.js";
-import { Ray }            from "../../proto/Ray.js";
+import type { Ray }            from "../../proto/Ray.js";
 import Vector2D           from "../../utils/physics/Vector2D.js";
 import { rayvenConfig }   from "../../config.js";
 
@@ -29,6 +29,12 @@ class RenderingPipeline extends System {
         this.rayCaster     = new RayCaster(this);
         this.dataModeller  = new DataModeller(this);
         this.renderer      = new Renderer(this);
+
+        locatorPromise
+        .then((locator)  => {
+            if(locator instanceof LocatorGL) this.locator = locator 
+        })
+        .catch((err)     => { throw Error(err) });
     }
 
     private __debugRay__(ray : Ray){
@@ -60,8 +66,8 @@ class RenderingPipeline extends System {
     }
 
     public execute(){
-
         if(!this.locator)                                     return false;
+
         if(!camera || !camera.castEdge || !camera.castCenter) return false;
 
         const wallIndices = this.spaceSearcher.getIndicesOfClosest(camera);
@@ -97,10 +103,5 @@ class RenderingPipeline extends System {
         return true;
     }
 };
-
-locatorPromise
-.then((locator)  => { if(locator instanceof LocatorGL) RenderingPipeline.prototype.locator = locator })
-.catch((err)     => { throw Error(err) });
-
 
 export default RenderingPipeline;

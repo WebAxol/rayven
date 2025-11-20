@@ -1,7 +1,7 @@
-import { Circle } from '../../proto/Circle.js';
-import { HorizontalWall } from '../../proto/HorizontalWall.js';
-import { VerticalWall } from '../../proto/VerticalWall.js';
-import { Kernox, ArrayList } from '/kernox.js';
+import type { Circle } from '../../proto/Circle.js';
+import type { HorizontalWall } from '../../proto/HorizontalWall.js';
+import type { VerticalWall } from '../../proto/VerticalWall.js';
+import { Kernox, ArrayList } from 'kernox';
 
 class SceneBuilder {
 

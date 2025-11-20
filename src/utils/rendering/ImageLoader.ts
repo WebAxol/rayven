@@ -13,7 +13,7 @@ class ImageLoader {
         
         try{
             const image = new Image();
-            image.src = './assets/textures/' + src; // at '/public'
+            image.src = './textures/' + src; // at '/public'
             this.#textures.set(name, image);
         }
         catch(err){

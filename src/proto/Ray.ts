@@ -1,8 +1,8 @@
 import Vector2D                         from "../utils/physics/Vector2D.js"
 import type { VerticalWall }            from "./VerticalWall.js"
 import type { HorizontalWall }          from "./HorizontalWall.js"
-import type { Entity, PrototypeSchema } from "/kernox.js";
-import { Circle } from "./Circle.js";
+import type { Entity, PrototypeSchema } from "kernox";
+import type { Circle } from "./Circle.js";
 
 interface Ray extends Entity {
     active     : boolean,
@@ -32,4 +32,4 @@ const rayPrototype :PrototypeSchema<Ray> = {
     } as Ray
 };
 
-export { Ray, rayPrototype };
+export { type Ray, rayPrototype };

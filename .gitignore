@@ -1,5 +1,5 @@
 node_modules
 -DS_Store
 coverage
-Mirroware.code-workspace
-
+lib
+dist

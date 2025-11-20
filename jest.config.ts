@@ -10,7 +10,6 @@ export default {
     "js"
   ],
   moduleNameMapper:{
-    '^/pluglightjs/(.*)\\.js$': '<rootDir>/vendor/pluglightjs/$1',
     '^(.*)\\.js$': '$1',
   },
   transform: {

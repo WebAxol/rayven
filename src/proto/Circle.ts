@@ -1,5 +1,5 @@
 import Vector2D from '../utils/physics/Vector2D.js';
-import type { Entity, PrototypeSchema } from '/kernox.js';
+import type { Entity, PrototypeSchema } from 'kernox';
 
 interface Circle extends Entity{
     center : Vector2D,

@@ -1,4 +1,4 @@
-import { ArrayList, System }  from "/kernox.js";
+import { ArrayList, System }  from "kernox";
 import { Circles, HorizontalWalls, VerticalWalls } from "../../setup/collections.js";
 
 import Vector2D             from "../../utils/physics/Vector2D.js";
