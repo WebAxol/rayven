@@ -79,8 +79,6 @@ class DataModeller {
         }
 
         this.cache = head;
-
-        //this.sys.__kernox.pauseExecution();
     }
 
     /**
