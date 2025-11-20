@@ -1,6 +1,6 @@
-import { Ray }           from '../../proto/Ray.js';
+import type { Ray }           from '../../proto/Ray.js';
 import Vector2D          from './../physics/Vector2D.js';
-import { Kernox }        from '/kernox.js';
+import { Kernox }        from 'kernox';
 
 class Camera {
 

@@ -1,4 +1,4 @@
-import { Kernox } from '/kernox.js';
+import { Kernox } from 'kernox';
 import { rayven } from '../rayven.js';
 import { camera } from '../utils/scene/Camera.js';
 import SceneBuilder from '../utils/scene/SceneBuilder.js';
@@ -88,10 +88,6 @@ const commands = {
     }   
 }
 
-window.addEventListener('keydown', (e) => {
-
-    if(commands[e.key]) commands[e.key]();
-});
 
 // execute
 

@@ -3,8 +3,8 @@ import Vector2D           from "../../utils/physics/Vector2D.js";
 import { rayvenConfig }             from "../../config.js";
 import { gl }             from "../../setup/webGL.js";
 import { camera }         from "../../utils/scene/Camera.js";
-import { Circle }         from "../../proto/Circle.js";
-import { System }         from "/kernox.js";
+import type { Circle }         from "../../proto/Circle.js";
+import { System }         from "kernox";
 
 type RGBA = [ number, number, number, number ]; 
 type Pair<T> = [ T, T ];

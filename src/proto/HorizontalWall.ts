@@ -1,4 +1,4 @@
-import type { Entity, PrototypeSchema } from "/kernox.js";
+import type { Entity, PrototypeSchema } from "kernox";
 
 interface HorizontalWall extends Entity {
     color  : string,
@@ -20,4 +20,4 @@ const horizontalWallPrototype :PrototypeSchema<HorizontalWall> = {
     collections: new Set([ "HorizontalWalls" ])
 };
 
-export {HorizontalWall, horizontalWallPrototype};
+export { type HorizontalWall, horizontalWallPrototype};

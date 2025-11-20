@@ -1,4 +1,4 @@
-import type { ArrayList, System }   from "/kernox.js";
+import type { ArrayList, System }   from "kernox";
 import type { HorizontalWall }      from "../../proto/HorizontalWall.js";
 import type { VerticalWall }        from "../../proto/VerticalWall.js";
 import type { Circle }              from "../../proto/Circle.js";

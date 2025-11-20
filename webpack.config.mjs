@@ -10,11 +10,6 @@ export default {
         path : path.resolve(__dirname,'dist'),
         filename : 'rayven.min.js'
     },
-    resolve : {
-        alias : {
-            "/kernox.js" : path.resolve(__dirname,'vendor/kernox.js')
-        }
-    },
 
     experiments: {
         outputModule: true

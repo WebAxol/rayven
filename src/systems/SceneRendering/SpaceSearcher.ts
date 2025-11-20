@@ -1,4 +1,4 @@
-import { ArrayList, System }      from "/kernox.js";
+import { ArrayList, System }      from "kernox";
 import { Camera }   from "../../utils/scene/Camera.js";
 
 class SpaceSearcher{

@@ -1,4 +1,4 @@
-import { KernoAddon, Kernox }     from  '/kernox.js';
+import { KernoAddon, Kernox }     from  'kernox';
 import { prototypes }     from './setup/prototypes.js';
 import { collections }    from './setup/collections.js';
 import { systems }        from './setup/systems.js';

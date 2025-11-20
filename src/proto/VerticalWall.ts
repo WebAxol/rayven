@@ -1,4 +1,4 @@
-import type { Entity, PrototypeSchema } from "/kernox.js";
+import type { Entity, PrototypeSchema } from "kernox";
 
 interface VerticalWall extends Entity {
     color  : string,

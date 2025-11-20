@@ -1,7 +1,7 @@
-import { HorizontalWall } from '../../proto/HorizontalWall.js';
-import { VerticalWall }   from '../../proto/VerticalWall.js';
-import { Circle }         from '../../proto/Circle.js';
-import { Ray }            from '../../proto/Ray.js';
+import type { HorizontalWall } from '../../proto/HorizontalWall.js';
+import type { VerticalWall }   from '../../proto/VerticalWall.js';
+import type { Circle }         from '../../proto/Circle.js';
+import type { Ray }            from '../../proto/Ray.js';
 import Vector2D           from './Vector2D.js';
 
 class CollisionDetector {

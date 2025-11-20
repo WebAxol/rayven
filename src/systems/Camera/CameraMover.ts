@@ -1,4 +1,4 @@
-import { System }         from '/kernox.js';
+import { System }         from 'kernox';
 import { camera }         from '../../utils/scene/Camera.js';
 import Vector2D           from '../../utils/physics/Vector2D.js';
 
@@ -7,7 +7,7 @@ class CameraMover extends System {
     private dt : number = 0;
     private speed :number = 0;
         
-    private commandKeyMap = {
+    private commandKeyMap : any = {
         w : () => { this.translateCamera(1, 0) },
         s : () => { this.translateCamera(-1,0) },
         a : () => { this.translateCamera( 0,1) },
@@ -16,7 +16,7 @@ class CameraMover extends System {
         l : () => { this.rotateCamera( -30 * this.dt) },
     }
 
-    private control = {
+    private control : any = {
         w : false,
         s : false,
         d : false,
@@ -73,13 +73,13 @@ class CameraMover extends System {
 
     // EVENTS
     
-    public onkeydown(info){
+    public onkeydown(info : any){
         if(this.control[info.key] !== undefined && this.control[info.key] !== true ){
             this.control[info.key] = true;
         }
     }
 
-    public onkeyup(info){
+    public onkeyup(info : any){
         if(this.control[info.key] !== undefined && this.control[info.key] !== false){
             this.control[info.key] = false;
         }
