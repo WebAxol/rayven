@@ -3,7 +3,8 @@ import ImageLoader from "../utils/rendering/ImageLoader.js";
 const loader = new ImageLoader();
 
 
-loader.load('bricks','floor.webp');
+loader.load('floor','floor.webp');
+loader.load('atlas','atlas.png');
 loader.load('sky','land.webp');
 
 

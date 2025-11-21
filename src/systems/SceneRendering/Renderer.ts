@@ -1,6 +1,7 @@
 import { gl }             from "../../setup/webGL.js";
 import LocatorGL          from "../../utils/rendering/LocatorGL.js";
 import { camera }         from "../../utils/scene/Camera.js";
+import { rayvenConfig }   from "../../config.js";
 import canvases           from "../../setup/canvases.js";
 import type RenderingPipeline from "./Orchestrator.js";
 
@@ -43,10 +44,11 @@ class Renderer {
 
         // Attributes
 
-        const a_color    :number = gl.getAttribLocation(this.frontProgram, 'a_color');
-        const a_position :number = gl.getAttribLocation(this.frontProgram, 'a_position');
-        const a_height   :number = gl.getAttribLocation(this.frontProgram, 'a_height');
-        const a_texCoord :number = gl.getAttribLocation(this.frontProgram, 'a_texCoord');
+        const a_color     :number = gl.getAttribLocation(this.frontProgram, 'a_color');
+        const a_position  :number = gl.getAttribLocation(this.frontProgram, 'a_position');
+        const a_height    :number = gl.getAttribLocation(this.frontProgram, 'a_height');
+        const a_texCoord  :number = gl.getAttribLocation(this.frontProgram, 'a_texCoord');
+        const a_texOffset :number = gl.getAttribLocation(this.frontProgram, 'a_texOffset');
 
         
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
@@ -135,11 +137,11 @@ class Renderer {
         // Position Attribute
 
         gl.vertexAttribPointer(
-            a_position, 
-            3, 
-            gl.FLOAT, 
-            false, 
-            9 * Float32Array.BYTES_PER_ELEMENT, 
+            a_position,
+            3,
+            gl.FLOAT,
+            false,
+            11 * Float32Array.BYTES_PER_ELEMENT,
             0
         );
 
@@ -148,25 +150,38 @@ class Renderer {
         gl.enableVertexAttribArray(a_color);
 
         gl.vertexAttribPointer(
-            a_color, 
-            4, 
-            gl.FLOAT, 
-            false, 
-            9 * Float32Array.BYTES_PER_ELEMENT, 
+            a_color,
+            4,
+            gl.FLOAT,
+            false,
+            11 * Float32Array.BYTES_PER_ELEMENT,
             3 * Float32Array.BYTES_PER_ELEMENT
         );
 
         // TexCoord Attribute
-    
+
         gl.enableVertexAttribArray(a_texCoord);
 
         gl.vertexAttribPointer(
-            a_texCoord, 
-            2, 
-            gl.FLOAT, 
-            false, 
-            9 * Float32Array.BYTES_PER_ELEMENT, 
+            a_texCoord,
+            2,
+            gl.FLOAT,
+            false,
+            11 * Float32Array.BYTES_PER_ELEMENT,
             7 * Float32Array.BYTES_PER_ELEMENT
+        );
+
+        // TexOffset Attribute
+
+        gl.enableVertexAttribArray(a_texOffset);
+
+        gl.vertexAttribPointer(
+            a_texOffset,
+            2,
+            gl.FLOAT,
+            false,
+            11 * Float32Array.BYTES_PER_ELEMENT,
+            9 * Float32Array.BYTES_PER_ELEMENT
         );
 
         // Uniforms
@@ -175,6 +190,16 @@ class Renderer {
             gl.getUniformLocation(this.frontProgram, 'u_resolution'),
             ctx.width,
             ctx.height
+        );
+
+        gl.uniform1f(
+            gl.getUniformLocation(this.frontProgram, 'u_atlasWidth'),
+            rayvenConfig.textureAtlasWidth
+        );
+
+        gl.uniform1f(
+            gl.getUniformLocation(this.frontProgram, 'u_atlasHeight'),
+            rayvenConfig.textureAtlasHeight
         ); 
 
         // Draw Walls
@@ -187,6 +212,7 @@ class Renderer {
         );
 
         gl.disableVertexAttribArray(a_texCoord);
+        gl.disableVertexAttribArray(a_texOffset);
 
     };
         

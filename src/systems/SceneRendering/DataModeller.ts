@@ -25,19 +25,21 @@ type Pair<T> = [ T, T ];
  * @property {Pair<number>}      t      : texture coordinates
  * @property {Pair<number>}      l      : vertical bounds that limit the sky and floor based on the current context
  * @property {Pair<RGBA>}        color  : Polygon background color vector
+ * @property {Pair<number>}      texOffset: texture offset (U, V) pointing to upper-left corner of texture in atlas
  * @property {Cache | undefined} child  : It can contain a reference to another Cache object, representing a sub-scene within a mirror
  * @property {boolean}          stripped: If true, it will make a rectangle for each column derived of every iteration of a ray for a particular element (suitable for non-linear geometry)
  */
 interface Cache {
-    itemID   : number;             
-    x        : Pair<number>;
-    y        : Pair<number>;        
-    z        : Pair<number>;
-    t        : Pair<number>;
-    l        : Pair<number>;      
-    color    : Pair<RGBA>;          
-    child    : Cache | undefined;   
-    stripped : boolean;
+    itemID    : number;
+    x         : Pair<number>;
+    y         : Pair<number>;
+    z         : Pair<number>;
+    t         : Pair<number>;
+    l         : Pair<number>;
+    color     : Pair<RGBA>;
+    texOffset : Pair<number>;
+    child     : Cache | undefined;
+    stripped  : boolean;
 }
 
 class DataModeller {
@@ -62,15 +64,16 @@ class DataModeller {
         // Empty cache is created by default
 
         for(let i = 0; i <= n; i++){
-            node.itemID = -1;
-            node.color  = [NaN,NaN]; 
-            node.x      = [NaN,NaN];
-            node.y      = [NaN,NaN]; 
-            node.z      = [NaN,NaN];
-            node.t      = [NaN,NaN];
-            node.l      = [1,1];
-            node.child  = undefined
-            node.stripped = false;
+            node.itemID    = -1;
+            node.color     = [NaN,NaN];
+            node.x         = [NaN,NaN];
+            node.y         = [NaN,NaN];
+            node.z         = [NaN,NaN];
+            node.t         = [NaN,NaN];
+            node.l         = [1,1];
+            node.texOffset = [0,0];
+            node.child     = undefined
+            node.stripped  = false;
 
             if(i == n) continue;
 
@@ -107,6 +110,21 @@ class DataModeller {
             cache.stripped = true;
             cache = cache.child;
         }
+    }
+
+    /**
+     * @description Calculates texture atlas offset from textureId
+     * @param textureId Integer identifying which texture in the atlas to use
+     * @returns Pair of [offsetU, offsetV] pointing to upper-left corner of texture in atlas
+     */
+    private getTextureOffset(textureId : number) : Pair<number> {
+
+        const atlasWidth  = rayvenConfig.textureAtlasWidth;
+        const atlasHeight = rayvenConfig.textureAtlasHeight;
+        const offsetU = (textureId % atlasWidth) / atlasWidth;
+        const offsetV = Math.floor(textureId / atlasWidth) / atlasHeight;
+
+        return [offsetU, offsetV];
     }
 
     private mapTexture(collidesAt : Vector2D, item : any){
@@ -180,6 +198,7 @@ class DataModeller {
         var depth : number = 0;
         var currentX, currentY, currentT, currentL = 1;
         var currentColor;
+        var currentTexOffset : Pair<number> = [0, 0];
         
         // The following arrays store a subset or all of data passed to WebGL buffers
 
@@ -203,7 +222,7 @@ class DataModeller {
                 itemID = ray.collidesWith.id;
 
                 // If the surface is circular (cylindrical), it will be rendered stripe by stripe
-                
+
                 stripped = ray.collidesWith.type == "Circle";
 
                 depth +=  ray.lambda * Math.cos(Math.abs(angle));
@@ -211,6 +230,7 @@ class DataModeller {
                 currentY = 0.01 + znear / depth;
                 currentX = Math.tan(angle - deltaAngle) * znear * ((index <= rayvenConfig.resolution / 2) ? -1 : 1);
                 currentT = this.mapTexture(ray.collidesAt, ray.collidesWith);
+                currentTexOffset = this.getTextureOffset(ray.collidesWith.textureId || 0);
                 currentColor = (ray.collidesWith ?  ray.collidesWith.color + `,${ray.collidesWith.opacity}` : "0,0,0,1")
                     .split(',')
                     .map((component, i) => {  return i < 3 ? parseFloat(component) / 255 : parseFloat(component); });
@@ -228,17 +248,17 @@ class DataModeller {
                 
                 level++;
 
-                let { x, y , z, t, l } = cache; 
-                            
+                let { x, y , z, t, l, texOffset } = cache;
+
                 frontSurf = [
-                    //          Position              |       Color      |    Texturing
-                    //  x           y           z     |  r   g   b   a   | U   V
-                    x[0] * z[0] , y[0] * z[0] , z[0] , ...cache.color[0], t[0],0,
-                    x[1] * z[1] , y[1] * z[1] , z[1] , ...cache.color[1], t[1],0,
-                    x[1] * z[1] ,-y[1] * z[1] , z[1] , ...cache.color[1], t[1],1,
-                    x[0] * z[0] ,-y[0] * z[0] , z[0] , ...cache.color[0], t[0],1,
+                    //          Position              |       Color      |    Texturing  | TexOffset
+                    //  x           y           z     |  r   g   b   a   | U   V         | offsetU offsetV
+                    x[0] * z[0] , y[0] * z[0] , z[0] , ...cache.color[0], t[0],0, ...texOffset,
+                    x[1] * z[1] , y[1] * z[1] , z[1] , ...cache.color[1], t[1],0, ...texOffset,
+                    x[1] * z[1] ,-y[1] * z[1] , z[1] , ...cache.color[1], t[1],1, ...texOffset,
+                    x[0] * z[0] ,-y[0] * z[0] , z[0] , ...cache.color[0], t[0],1, ...texOffset,
                 ]
-                
+
                 .concat(frontSurf);
 
                 frontElement = ([
@@ -278,26 +298,28 @@ class DataModeller {
     
                 // Set first edge after cut
 
-                cache.itemID = itemID; 
-                cache.color[0]  = currentColor; 
-                cache.x[0] = x[1]; 
-                cache.y[0] = currentY;
-                cache.l[0] = currentL;
-                cache.z[0] = depth;
-                cache.t[0] = currentT;    // First texture edge is undefined as it depends on the next geometry the ray collides with
-                cache.stripped = stripped;
+                cache.itemID     = itemID;
+                cache.color[0]   = currentColor;
+                cache.x[0]       = x[1];
+                cache.y[0]       = currentY;
+                cache.l[0]       = currentL;
+                cache.z[0]       = depth;
+                cache.t[0]       = currentT;
+                cache.texOffset  = currentTexOffset;
+                cache.stripped   = stripped;
             }
 
             // Initialize first edge when cache is untouched
-            
+
             if(cache.itemID < 0 && ray){
-                cache.itemID = itemID;
-                cache.color[0] = currentColor;
-                cache.color[1] = currentColor;
-                cache.x[0]     = currentX;
-                cache.y[0]     = currentY;
-                cache.t[0]     = currentT;
-                cache.l[0]     = currentL;
+                cache.itemID    = itemID;
+                cache.color[0]  = currentColor;
+                cache.color[1]  = currentColor;
+                cache.x[0]      = currentX;
+                cache.y[0]      = currentY;
+                cache.t[0]      = currentT;
+                cache.l[0]      = currentL;
+                cache.texOffset = currentTexOffset;
             } 
 
             // Update second edge
@@ -324,8 +346,8 @@ class DataModeller {
 
         gl.bindBuffer(gl.ARRAY_BUFFER,this.frontBuffer);
         gl.bufferSubData(
-            gl.ARRAY_BUFFER, 
-            (this.memoryIndex - level) * 9 * 4 * Float32Array.BYTES_PER_ELEMENT, 
+            gl.ARRAY_BUFFER,
+            (this.memoryIndex - level) * 11 * 4 * Float32Array.BYTES_PER_ELEMENT,
             new Float32Array(frontSurf)
         );
 
