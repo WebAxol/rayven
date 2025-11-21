@@ -68,7 +68,7 @@ const locatorPromise :Promise<unknown> = new Promise( async (resolve,reject) => 
     const frontBuffer        :WebGLBuffer | null = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, frontBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(3000 * 5 * 8), gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(3000 * 11 * 4), gl.DYNAMIC_DRAW);  // 11 floats/vertex * 4 vertices/quad
 
     const frontElementBuffer :WebGLBuffer | null = gl.createBuffer();
 
@@ -112,8 +112,12 @@ const locatorPromise :Promise<unknown> = new Promise( async (resolve,reject) => 
     
     // Textures
 
+    // Floor texture
+
+    gl.useProgram(lyingProgram);
+
     const floorTexture :WebGLTexture | null = gl.createTexture();
-    const bricks   :any = loader.get("bricks");
+    const floor   :any = loader.get("floor");
 
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, floorTexture);
@@ -124,10 +128,12 @@ const locatorPromise :Promise<unknown> = new Promise( async (resolve,reject) => 
 
     gl.texImage2D(
         gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,
-        gl.UNSIGNED_BYTE, bricks
+        gl.UNSIGNED_BYTE, floor
     )
 
     gl.uniform1i(gl.getUniformLocation(lyingProgram, "floorTexture"), 0);
+
+    // Sky texture (sky-phere)
 
     const skyTexture :WebGLTexture | null = gl.createTexture();
     const sky   :any = loader.get("sky");
@@ -145,6 +151,27 @@ const locatorPromise :Promise<unknown> = new Promise( async (resolve,reject) => 
     )
 
     gl.uniform1i(gl.getUniformLocation(lyingProgram, "skyTexture"), 1);
+
+    // Texture atlas (for walls)
+
+    gl.useProgram(frontProgram);
+
+    const atlasTexture :WebGLTexture | null = gl.createTexture();
+    const atlas   :any = loader.get("atlas");
+
+    gl.activeTexture(gl.TEXTURE2);
+    gl.bindTexture(gl.TEXTURE_2D, atlasTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.texImage2D(
+        gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,
+        gl.UNSIGNED_BYTE, atlas
+    )
+
+    gl.uniform1i(gl.getUniformLocation(frontProgram, "atlasTexture"), 2);
 
 
     return resolve(_locator);

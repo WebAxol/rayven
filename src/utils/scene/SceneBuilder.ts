@@ -56,7 +56,8 @@ class SceneBuilder {
             endX   : Math.max(vertexA[0],vertexB[0]),
             posY   : vertexA[1],
             opacity: opacity || 1,
-            color  : color || 'white' 
+            textureId : Math.round(Math.random() * 3),
+            color : color || '0,0,0' 
         });
     };
 
@@ -67,7 +68,8 @@ class SceneBuilder {
             endY    : Math.max(vertexA[1],vertexB[1]),
             posX    : vertexA[0],
             opacity : opacity || 1,
-            color  : color || 'white' 
+            textureId : Math.round(Math.random() * 3),
+            color  : color || '0,0,0' 
         });
     };
 

@@ -1,7 +1,7 @@
-import { KernoAddon, Kernox }     from  'kernox';
-import { prototypes }     from './setup/prototypes.js';
-import { collections }    from './setup/collections.js';
-import { systems }        from './setup/systems.js';
+import type { KernoAddon }  from  'kernox';
+import { prototypes }       from './setup/prototypes.js';
+import { collections }      from './setup/collections.js';
+import { systems }          from './setup/systems.js';
 
 export const rayven : KernoAddon = {
     name : "rayven",

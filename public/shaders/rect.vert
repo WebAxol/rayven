@@ -1,12 +1,14 @@
 attribute vec3  a_position;
 attribute vec4  a_color;
 attribute vec2  a_texCoord;
+attribute vec2  a_texOffset;
 attribute float a_height;
 
 varying vec4  v_color;
 varying float v_height;
-varying vec2 v_texCoord;
-varying vec3 v_position;
+varying vec2  v_texCoord;
+varying vec2  v_texOffset;
+varying vec3  v_position;
 
 void main() {
 
@@ -14,8 +16,9 @@ void main() {
 
     gl_Position.w = a_position.z;
 
-    v_color  = a_color;
-    v_height = a_height;
-    v_texCoord = a_texCoord;
-    v_position = a_position;
+    v_color     = a_color;
+    v_height    = a_height;
+    v_texCoord  = a_texCoord;
+    v_texOffset = a_texOffset;
+    v_position  = a_position;
 }
