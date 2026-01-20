@@ -1,5 +1,5 @@
 import { System } from "kernox";
-import { Camera, camera } from "../../utils/scene/Camera.js";
+import { Camera, camera } from "../utils/scene/Camera.js";
 
 class InputHandler extends System {
 

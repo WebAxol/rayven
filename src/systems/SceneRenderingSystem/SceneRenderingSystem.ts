@@ -1,32 +1,32 @@
-import { System }         from "kernox";
-import SpaceSearcher      from "./SpaceSearcher.js";
-import RayCaster          from "./RayCaster.js";
-import DataModeller       from "./DataModeller.js";
-import Renderer           from "./Renderer.js";
+import { System }           from "kernox";
+import SpaceSearcher        from "./SpaceSearcher.js";
+import { RayCastingSystem } from "../RayCastingSystem.js";
+import DataModeller         from "./DataModeller.js";
+import Renderer             from "./Renderer.js";
 
-import LocatorGL          from "../../utils/rendering/LocatorGL.js";
-import { locatorPromise } from "../../setup/webGL.js";
-import { camera }         from "../../utils/scene/Camera.js";
-import type { Ray }            from "../../proto/Ray.js";
-import Vector2D           from "../../utils/physics/Vector2D.js";
-import { rayvenConfig }   from "../../config.js";
+import LocatorGL            from "../../utils/rendering/LocatorGL.js";
+import { locatorPromise }   from "../../setup/webGL.js";
+import { camera }           from "../../utils/scene/Camera.js";
+import type { RayAttributes, RayEntity }   from "../../interfaces/Ray.js";
+import Vector2D             from "../../utils/physics/Vector2D.js";
+import { rayvenConfig }     from "../../config.js";
 
-import canvases           from "../../setup/canvases.js";
+import canvases             from "../../setup/canvases.js";
 
 const ctx :any = canvases.canvas2d.getContext('2d');
 
-class RenderingPipeline extends System {
+class SceneRenderingSystem extends System {
 
     public locator          :LocatorGL | undefined;
 
     private spaceSearcher!   :SpaceSearcher;
-    private rayCaster!       :RayCaster;
+    private rayCaster!       :RayCastingSystem;
     private dataModeller!    :DataModeller;
     private renderer!        :Renderer;
 
     public init(){
         this.spaceSearcher = new SpaceSearcher(this);
-        this.rayCaster     = new RayCaster(this);
+        this.rayCaster     = new RayCastingSystem(this);
         this.dataModeller  = new DataModeller(this);
         this.renderer      = new Renderer(this);
 
@@ -37,7 +37,7 @@ class RenderingPipeline extends System {
         .catch((err)     => { throw Error(err) });
     }
 
-    private __debugRay__(ray : Ray){
+    private __debugRay__(ray : RayAttributes){
 
         if(!camera.castCenter) return;
 
@@ -72,7 +72,7 @@ class RenderingPipeline extends System {
 
         const wallIndices = this.spaceSearcher.getIndicesOfClosest(camera);
 
-        const ray : Ray                = camera.castEdge;
+        const ray                      = camera.castEdge;
         const rotationAngle  :number   = (camera.FOV / rayvenConfig.resolution) * (Math.PI / 180) * -1;
         const complexRotator :number[] = [ Math.cos(rotationAngle), Math.sin(rotationAngle) ];
         const direction = Vector2D.copy(ray.direction);
@@ -104,4 +104,4 @@ class RenderingPipeline extends System {
     }
 };
 
-export default RenderingPipeline;
+export default SceneRenderingSystem;

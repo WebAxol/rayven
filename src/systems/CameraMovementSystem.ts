@@ -1,8 +1,8 @@
 import { System }         from 'kernox';
-import { camera }         from '../../utils/scene/Camera.js';
-import Vector2D           from '../../utils/physics/Vector2D.js';
+import { camera }         from '../utils/scene/Camera.js';
+import Vector2D           from '../utils/physics/Vector2D.js';
 
-class CameraMover extends System {
+export class CameraMovementSystem extends System {
 
     private dt : number = 0;
     private speed :number = 0;
@@ -85,5 +85,3 @@ class CameraMover extends System {
         }
     }
 };
-
-export default CameraMover;

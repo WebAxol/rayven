@@ -1,4 +1,4 @@
-import type { Ray }           from '../../proto/Ray.js';
+import type { RayEntity } from '../../interfaces/Ray.js';
 import Vector2D          from './../physics/Vector2D.js';
 import { Kernox }        from 'kernox';
 
@@ -9,8 +9,8 @@ class Camera {
     public wallIndices : { vertical : number, horizontal : number};
     public pos         : Vector2D;
     public FOV         : number;
-    public castCenter  : Ray | undefined;
-    public castEdge    : Ray | undefined;
+    public castCenter? : RayEntity;
+    public castEdge?   : RayEntity;
 
     constructor(){
 
@@ -34,12 +34,12 @@ class Camera {
             return false;
         }
 
-        camera.castCenter = app.entityFactory.create<Ray>('Ray', { 
+        camera.castCenter = app.entityFactory.create<RayEntity>('Ray', { 
             source    : camera.pos,
             direction : Vector2D.normalize(new Vector2D(dx,dy))
         });
         
-        camera.castEdge = app.entityFactory.create<Ray>('Ray', { 
+        camera.castEdge = app.entityFactory.create<RayEntity>('Ray', { 
             source    : camera.pos,
             direction : Vector2D.complexRotate(
                 Vector2D.normalize(new Vector2D(dx,dy)), 

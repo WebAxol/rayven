@@ -1,6 +1,6 @@
-import type { Circle } from '../../proto/Circle.js';
-import type { HorizontalWall } from '../../proto/HorizontalWall.js';
-import type { VerticalWall } from '../../proto/VerticalWall.js';
+import type { CircleEntity } from '../../interfaces/Circle.js';
+import type { HorizontalWall } from '../../proto/HorizontalWallPrototype.js';
+import type { VerticalWall } from '../../proto/VerticalWallPrototype.js';
 import { Kernox, ArrayList } from 'kernox';
 
 class SceneBuilder {
@@ -75,7 +75,7 @@ class SceneBuilder {
 
     private buildCircle(...args){
 
-        return this.app.entityFactory.create<Circle>('Circle',{
+        return this.app.entityFactory.create<CircleEntity>('Circle',{
             radius : args[1],
             center : args[0],
             opacity: args[2],

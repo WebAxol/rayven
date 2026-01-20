@@ -1,12 +1,11 @@
 import { ArrayList, System }  from "kernox";
-import { Circles, HorizontalWalls, VerticalWalls } from "../../setup/collections.js";
+import { Circles, HorizontalWalls, VerticalWalls } from "../collections.js";
 
-import Vector2D             from "../../utils/physics/Vector2D.js";
-import { camera }           from "../../utils/scene/Camera.js";
-import canvases             from "../../setup/canvases.js";
+import Vector2D             from "../utils/physics/Vector2D.js";
+import { camera }           from "../utils/scene/Camera.js";
+import canvases             from "../setup/canvases.js";
 
-
-class SceneRenderer2D extends System {
+export class MiniMapRenderingSystem extends System {
 
     private horizontalWalls! : HorizontalWalls;
     private verticalWalls!   : VerticalWalls;
@@ -101,7 +100,4 @@ class SceneRenderer2D extends System {
         this.ctx.stroke();
 
     }
-
-}
-
-export default SceneRenderer2D;
+};

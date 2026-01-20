@@ -1,17 +1,17 @@
 import type { ArrayList, System }   from "kernox";
-import type { HorizontalWall }      from "../../proto/HorizontalWall.js";
-import type { VerticalWall }        from "../../proto/VerticalWall.js";
-import type { Circle }              from "../../proto/Circle.js";
-import type { Ray }                 from "../../proto/Ray.js";
+import type { HorizontalWall }      from "../proto/HorizontalWallPrototype.js";
+import type { VerticalWall }        from "../proto/VerticalWallPrototype.js";
+import type { CircleEntity }        from "../interfaces/Circle.js";
+import type { RayEntity }           from "../interfaces/Ray.js";
 
-import CollisionDetector            from "../../utils/physics/CollisionDetector.js";
-import Vector2D                     from "../../utils/physics/Vector2D.js";
+import CollisionDetector            from "../utils/physics/CollisionDetector.js";
+import Vector2D                     from "../utils/physics/Vector2D.js";
 
-class RayCaster {
+export class RayCastingSystem {
     
     private horizontalWalls! : HorizontalWall[];
     private verticalWalls!   : VerticalWall[];
-    private circles!         : Circle[];
+    private circles!         : CircleEntity[];
 
     constructor( private sys : System ){
         // When the application starts execution, request geometry
@@ -99,7 +99,7 @@ class RayCaster {
 
     // WARNING: The following function assumes that wall collections are properly sorted in ascending order based on their posX and posY values
 
-    private iterativeWallCollisionTest(ray : Ray, indices : { horizontal :number, vertical : number }) :boolean {
+    private iterativeWallCollisionTest(ray : RayEntity, indices : { horizontal :number, vertical : number }) :boolean {
 
         // Sense indicates to which direction the ray moves (up or down) and (left or right)
 
@@ -152,7 +152,7 @@ class RayCaster {
         return collision ? true : false;
     }
 
-    private testAgainstCircles(ray : Ray) :boolean {
+    private testAgainstCircles(ray : RayEntity) :boolean {
 
         var collided = false, collision;
 
@@ -175,5 +175,3 @@ class RayCaster {
         return collided;
     }
 };
-
-export default RayCaster;
