@@ -1,4 +1,5 @@
 import type { Entity, PrototypeSchema } from "kernox";
+import { VerticalWallAttributes } from "../interfaces/Wall.js";
 
 interface VerticalWall extends Entity {
     color    : string,
@@ -9,7 +10,7 @@ interface VerticalWall extends Entity {
     textureId: number
 }
 
-const verticalWallPrototype :PrototypeSchema<VerticalWall> = {
+const VerticalWallPrototype :PrototypeSchema<VerticalWallAttributes> = {
     name: "VerticalWall",
     attributes: {
         color    : 'white',
@@ -18,8 +19,8 @@ const verticalWallPrototype :PrototypeSchema<VerticalWall> = {
         posX     : NaN,
         opacity  : 1,
         textureId: 0
-    } as VerticalWall,
+    },
     collections: new Set([ "VerticalWalls" ])
 };
 
-export {VerticalWall, verticalWallPrototype};
+export {VerticalWall, VerticalWallPrototype};

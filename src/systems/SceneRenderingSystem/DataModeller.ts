@@ -1,10 +1,10 @@
-import LocatorGL          from "../../utils/rendering/LocatorGL.js";
-import Vector2D           from "../../utils/physics/Vector2D.js";
+import LocatorGL                    from "../../utils/rendering/LocatorGL.js";
+import Vector2D                     from "../../utils/physics/Vector2D.js";
 import { rayvenConfig }             from "../../config.js";
-import { gl }             from "../../setup/webGL.js";
-import { camera }         from "../../utils/scene/Camera.js";
-import type { Circle }         from "../../proto/Circle.js";
-import { System }         from "kernox";
+import { gl }                       from "../../setup/webGL.js";
+import { camera }                   from "../../utils/scene/Camera.js";
+import type { CircleAttributes }    from "../../interfaces/Circle.js";
+import { System }                   from "kernox";
 
 type RGBA = [ number, number, number, number ]; 
 type Pair<T> = [ T, T ];
@@ -165,7 +165,7 @@ class DataModeller {
      * @param cyl        Object containing a radius and a position vector 
      * @returns          Integer between 0 and 1 corresponding to the normalized x position of the texture
      */
-    private mapCylindricalTexture(collidesAt : Vector2D, cyl : Circle) : number {
+    private mapCylindricalTexture(collidesAt : Vector2D, cyl : CircleAttributes) : number {
 
         let _angle = Math.ceil(this.sys.__kernox.frame / 1) / 50;
 

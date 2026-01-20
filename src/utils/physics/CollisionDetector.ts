@@ -1,12 +1,12 @@
-import type { HorizontalWall } from '../../proto/HorizontalWall.js';
-import type { VerticalWall }   from '../../proto/VerticalWall.js';
-import type { Circle }         from '../../proto/Circle.js';
-import type { Ray }            from '../../proto/Ray.js';
-import Vector2D           from './Vector2D.js';
+import type { HorizontalWall }   from '../../proto/HorizontalWallPrototype.js';
+import type { VerticalWall }     from '../../proto/VerticalWallPrototype.js';
+import type { CircleAttributes } from '../../interfaces/Circle.js';
+import type { RayAttributes }    from '../../interfaces/Ray.js';
+import Vector2D                  from './Vector2D.js';
 
 class CollisionDetector {
 
-    public static RayVsVerticalLine(ray : Ray, x: number) : number | false {
+    public static RayVsVerticalLine(ray : RayAttributes, x: number) : number | false {
         
         const lambda :number = (x - ray.source.x) / ray.direction.x;
 
@@ -15,7 +15,7 @@ class CollisionDetector {
     }
 
     
-    public static RayVsVerticalWall(ray : Ray ,wall : VerticalWall) : Vector2D | false {
+    public static RayVsVerticalWall(ray : RayAttributes ,wall : VerticalWall) : Vector2D | false {
 
         const lambda :number | false = CollisionDetector.RayVsVerticalLine(ray, wall.posX); 
 
@@ -27,7 +27,7 @@ class CollisionDetector {
     }  
 
 
-    public static RayVsHorizontalLine(ray : Ray, y: number) : number | false {
+    public static RayVsHorizontalLine(ray : RayAttributes, y: number) : number | false {
         
         const lambda :number = (y - ray.source.y) / ray.direction.y;
 
@@ -36,7 +36,7 @@ class CollisionDetector {
     }
 
 
-    public static RayVsHorizontalWall(ray : Ray , wall : HorizontalWall) : Vector2D | false  {
+    public static RayVsHorizontalWall(ray : RayAttributes , wall : HorizontalWall) : Vector2D | false  {
         
         const lambda :number | false = CollisionDetector.RayVsHorizontalLine(ray, wall.posY);
 
@@ -48,7 +48,7 @@ class CollisionDetector {
     } 
 
 
-    public static RayVsCircle(ray : any, circle :Circle) : { point : Vector2D, lambda : number } | false {
+    public static RayVsCircle(ray : any, circle : CircleAttributes) : { point : Vector2D, lambda : number } | false {
 
         if(circle.radius <= 0)  throw Error("Invalid circle radius: it must be a positive number");
         

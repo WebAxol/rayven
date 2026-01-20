@@ -9,7 +9,7 @@ interface HorizontalWall extends Entity {
     textureId: number
 }
 
-const horizontalWallPrototype :PrototypeSchema<HorizontalWall> = {
+const HorizontalWallPrototype :PrototypeSchema<HorizontalWall> = {
     name: "HorizontalWall",
     attributes: {
         color    : 'white',
@@ -22,4 +22,4 @@ const horizontalWallPrototype :PrototypeSchema<HorizontalWall> = {
     collections: new Set([ "HorizontalWalls" ])
 };
 
-export { type HorizontalWall, horizontalWallPrototype};
+export { type HorizontalWall, HorizontalWallPrototype};

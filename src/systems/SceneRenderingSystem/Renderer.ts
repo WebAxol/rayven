@@ -3,7 +3,7 @@ import LocatorGL          from "../../utils/rendering/LocatorGL.js";
 import { camera }         from "../../utils/scene/Camera.js";
 import { rayvenConfig }   from "../../config.js";
 import canvases           from "../../setup/canvases.js";
-import type RenderingPipeline from "./Orchestrator.js";
+import type SceneRenderingSystem from "./SceneRenderingSystem.js";
 
 const ctx = canvases.canvas3d;
 
@@ -18,7 +18,7 @@ class Renderer {
     private frontProgram!        :WebGLProgram;
     private lyingProgram!        :WebGLProgram;
 
-    constructor( private sys : RenderingPipeline ){}
+    constructor( private sys : SceneRenderingSystem ){}
 
     init(){
 
