@@ -17,7 +17,7 @@ Experimental WebGL-based rendering engine that simulates mirrors using raycastin
 
 ## Introduction
 
-Rayven is an emerging rendering system, inspired on the classing raycasting technique employed by games like <i>Wolfenstein 3D</i>. It introduces recursive ray bouncing to simulate reflections, while being a much lighter than a raytracer. This engine is intended for retro-styled games and individual projects.
+Rayven is an emerging rendering system, inspired on the classing raycasting technique employed by games like <i>Wolfenstein 3D</i>. It introduces recursive ray bouncing to simulate reflections, while being much lighter than a raytracer. This engine is intended for retro-styled games and individual projects.
 
 ### Main features
 
